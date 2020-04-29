@@ -40,11 +40,12 @@ digitalWrite(trigPin, LOW);
 duration = pulseIn(echoPin, HIGH);
 // Calculating the distance
 distance= duration*0.034/2;
-distance = distance /100;
-//if movement
-if (distance < 4 ){
+Serial.print("Distance: ");
+Serial.println(distance);
+//if movement (< 400 to avoid errors)
+if (distance < 400 ){
   // Prints the distance on the Serial Monitor
-  delay(188);
+  delay(500);
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   // Sets the trigPin on HIGH state for 10 micro seconds
@@ -54,36 +55,38 @@ if (distance < 4 ){
   duration = pulseIn(echoPin, HIGH);
 // Calculating the distance
   distance2 = duration*0.034/2;
-  distance2 = distance2 /100;
-  if (distance2 < 4) {
+  Serial.print("Distance2: ");
+  Serial.println(distance2);
+  if (distance2 < 400) {
       // set abs distance
       distanceec = abs(distance - distance2) ; // cm
-      if (distanceec > 0.1){
+      //to avoid minimum movements
+      if (distanceec > 1){
       digitalWrite(LEDROUGE, HIGH);
       digitalWrite(LEDVERTE, LOW);
       // check distance
       lcd.setCursor(0,0);
       lcd.print("Distance 1: ");
       lcd.print(distance);
-      lcd.print("m");
+      lcd.print("cm");
       lcd.setCursor(0,1);
       lcd.print("Distance 2: ");
       lcd.print(distance2);
-      lcd.print("m");
+      lcd.print("cm");
       // Set speed
-      vitesse = distanceec/ 0.189 ; // calcul vitesse v=d/t (m/s) delay
+      vitesse = distanceec/50 ; // calcul vitesse v=d/t (cm/ms) to m/s delay
       vitesse = vitesse * 3.6; // calcul convertion km/h
       delay(2000);
       lcd.clear();
       lcd.setCursor(0,0);
       lcd.print("Distance: ");
       lcd.print(distanceec);
-      lcd.print("m");
+      lcd.print("cm");
       lcd.setCursor(0,1);
       lcd.print("Vitesse: ");
       lcd.print(vitesse);
       lcd.print("KM/H");
-      delay(5000);
+      delay(3000);
       }
   lcd.clear();
   }
