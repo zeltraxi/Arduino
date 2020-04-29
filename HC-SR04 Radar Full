@@ -1,7 +1,15 @@
+/*
+* Ultrasonic Sensor HC-SR04 and Arduino Tutorial
+*
+* by Dejan Nedelkovski,
+* www.HowToMechatronics.com
+*
+*/
 #include <LiquidCrystal.h>
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 // defines pins numbers
+const int backlight = 1;
 const int LEDROUGE = 7;
 const int LEDVERTE = 8;
 const int trigPin = 9;
@@ -16,6 +24,7 @@ float vitesse;
 float distanceec;
 
 void setup() {
+pinMode(backlight, OUTPUT); // Sets the backlight as an Output
 pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
 pinMode(echoPin, INPUT); // Sets the echoPin as an Input
 pinMode(LEDROUGE , OUTPUT);
@@ -42,7 +51,7 @@ duration = pulseIn(echoPin, HIGH);
 distance= duration*0.034/2;
 Serial.print("Distance: ");
 Serial.println(distance);
-//if movement (< 400 to avoid errors)
+//if movement
 if (distance < 400 ){
   // Prints the distance on the Serial Monitor
   delay(500);
@@ -60,7 +69,6 @@ if (distance < 400 ){
   if (distance2 < 400) {
       // set abs distance
       distanceec = abs(distance - distance2) ; // cm
-      //to avoid minimum movements
       if (distanceec > 1){
       digitalWrite(LEDROUGE, HIGH);
       digitalWrite(LEDVERTE, LOW);
